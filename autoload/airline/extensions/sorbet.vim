@@ -23,8 +23,7 @@ endfunction
 
 function! airline#extensions#sorbet#apply(...)
   if &filetype == "ruby"
-    let w:airline_section_c = get(w:, 'airline_section_c', g:airline_section_c)
-    let w:airline_section_c .= '%{airline#extensions#sorbet#status()}'
+    call airline#extensions#append_to_section('c', '%{airline#extensions#sorbet#status()}')
   endif
 endfunction
 
