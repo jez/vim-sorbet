@@ -1,9 +1,37 @@
 # vim-sorbet
 
+> This is not an official Sorbet project.
+> Be prepared to fix things yourself.
+
 [![video demo](https://user-images.githubusercontent.com/5544532/96692164-97c17100-133a-11eb-8323-6c1e4f567a7b.png)](https://youtu.be/x8EFninTAio)
 
-This assumes you have already configured LanguageClient-neovim to work with
-Sorbet.
+This plugin just adds support for showing Sorbet progress notifications.
+You can see the notifications in the demo above.
+
+## Requirements
+
+- LanguageClient-neovim
+- vim-airline
+
+## Usage
+
+I assume you know how to configure LanguageClient-neovim to work with Sorbet.
+
+You will need to have a `.vim/settings.json` file in each project you want to
+use with Sorbet:
+
+```json
+{
+  "initializationOptions": {
+    "supportsOperationNotifications": true
+  }
+}
+```
+
+You can chime in on [this feature request] against LanguageClient-neovim to
+request a way to configure this globally.
+
+[this feature request]: https://github.com/autozimu/LanguageClient-neovim/issues/1107
 
 If you want to customize where the section goes:
 
@@ -14,4 +42,3 @@ function! MyCustomAirlineInit() abort
 endfunction
 au User AirlineAfterInit ++once call MyCustomAirlineInit()
 ```
-
