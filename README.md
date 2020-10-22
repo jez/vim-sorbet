@@ -47,7 +47,16 @@ au User AirlineAfterInit ++once call MyCustomAirlineInit()
 
 - Patch LanguageClient-neovim to send autocmd when server fails to start
   - Spawn fails + message
+  - Read this commit more closely (c75636525bf2cedee9f30e3eee5c3fef5d56d6b2)
 - Surface error message better to user
   - Especially watchman error, `--dir` error, file not found error, etc.
 - Auto-configure serverCommands
 - Vim doc/ pages
+- status line diagnostic counts (ea92efe)
+- prefered markup kind (26d77fa)
+
+Read changelog
+
+```
+gla 055744014991647e03c92d537e9c2fd49f7d5d85..HEAD
+```
