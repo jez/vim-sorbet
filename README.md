@@ -42,3 +42,12 @@ function! MyCustomAirlineInit() abort
 endfunction
 au User AirlineAfterInit ++once call MyCustomAirlineInit()
 ```
+
+## Future ideas
+
+- Patch LanguageClient-neovim to send autocmd when server fails to start
+  - Spawn fails + message
+- Surface error message better to user
+  - Especially watchman error, `--dir` error, file not found error, etc.
+- Auto-configure serverCommands
+- Vim doc/ pages

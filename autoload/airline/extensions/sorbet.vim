@@ -12,6 +12,34 @@ if !exists('g:airline#extensions#sorbet#auto')
   let g:airline#extensions#sorbet#auto = 1
 endif
 
+if !exists('g:airline#extensions#sorbet#use_short_descriptions')
+  let g:airline#extensions#sorbet#use_short_descriptions = 1
+endif
+
+if !exists('g:airline#extensions#sorbet#short_descriptions')
+  let g:airline#extensions#sorbet#short_descriptions = {}
+endif
+
+let s:default_short_descriptions = {
+      \ 'Idle': '✔',
+      \ 'Indexing': '⏳',
+      \ 'SlowPathBlocking': '⌛️',
+      \ 'SlowPathNonBlocking': '…',
+      \ 'References': '⌛️',
+      \ 'SymbolSearch': '⌛️',
+      \ }
+
+" keep means: don't overwrite an existing key when merging
+call extend(g:airline#extensions#sorbet#short_descriptions, s:default_short_descriptions, 'keep')
+
+if !exists('g:airline#extensions#sorbet#long_descriptions')
+  " If you want to set this, this can be the same shape as short_descriptions
+  " (one key per operationName)
+  " operationName's without keys in this will default to the description from
+  " the server.
+  let g:airline#extensions#sorbet#long_descriptions = {}
+endif
+
 " First we define an init function that will be invoked from extensions.vim
 function! airline#extensions#sorbet#init(ext)
   call airline#parts#define_raw('sorbet', '%{airline#extensions#sorbet#status()}')
@@ -30,20 +58,21 @@ endfunction
 function! airline#extensions#sorbet#status_bare()
   if exists('g:sorbet_showOperation_status')
     if empty(g:sorbet_showOperation_status)
-      return '✔'
-    else
-      let l:desc = g:sorbet_showOperation_status[-1].operationName
-      if l:desc ==# 'Indexing'
-        return '⏳'
-      elseif l:desc ==# 'SlowPathBlocking'
-        return '⌛️'
-      elseif l:desc ==# 'SlowPathNonBlocking'
-        return '…'
-      elseif l:desc ==# 'References'
-        return '⌛️'
+      if g:airline#extensions#sorbet#use_short_descriptions
+        return g:airline#extensions#sorbet#short_descriptions.Idle
       else
-        return '?'
-      endif
+        let l:long_descs = g:airline#extensions#sorbet#long_descriptions
+        return get(l:long_descs, 'Idle', 'Idle')
+      end
+    else
+      let l:status = g:sorbet_showOperation_status[-1]
+      if g:airline#extensions#sorbet#use_short_descriptions
+        let l:short_descs = g:airline#extensions#sorbet#short_descriptions
+        return get(l:short_descs, l:status.operationName, '?')
+      else
+        let l:long_descs = g:airline#extensions#sorbet#long_descriptions
+        return get(l:long_descs, l:status.operationName, l:status.description)
+      end
     endif
   else
     return ''
