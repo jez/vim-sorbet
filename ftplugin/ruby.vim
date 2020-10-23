@@ -49,16 +49,21 @@ function! s:get_server_command() abort
   endif
 endfunction
 
-if !has_key(g:LanguageClient_serverCommands, 'ruby')
-  let s:sorbet_lsp_args = ['--lsp']
+function! s:get_server_args() abort
+  let l:sorbet_lsp_args = ['--lsp']
 
   if !filereadable('sorbet/config')
-    let s:sorbet_lsp_args += ['-e', '0', fnamemodify(s:script_dir, ':h').'/.empty']
+        \ && fnamemodify(getcwd(), ':p') !~# $HOME.'/stripe/pay-server'
+    let l:sorbet_lsp_args += ['-e', '0', fnamemodify(s:script_dir, ':h').'/.empty']
   endif
 
-  let s:sorbet_lsp_args += g:sorbet_lsp_extra_args
-
   " TODO(jez) --debug-log-file ?
+
+  let l:sorbet_lsp_args += g:sorbet_lsp_extra_args
+endfunction
+
+if !has_key(g:LanguageClient_serverCommands, 'ruby')
+  let s:sorbet_lsp_args = s:get_server_args()
 
   let s:sorbet_cmd = s:get_server_command()
   if type(s:sorbet_cmd) == v:t_list
