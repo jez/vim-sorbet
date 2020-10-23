@@ -52,6 +52,7 @@ endfunction
 function! airline#extensions#sorbet#apply(...)
   if &filetype == "ruby"
     call airline#extensions#append_to_section('c', '%{airline#extensions#sorbet#status()}')
+    call airline#extensions#append_to_section('warning', '%{airline#extensions#sorbet#errors()}')
   endif
 endfunction
 
@@ -85,7 +86,20 @@ function! airline#extensions#sorbet#status()
     return ''
   else
     let l:spc = g:airline_symbols.space
-    let l:prefix = g:airline_left_alt_sep.l:spc.'srb: '
-    return l:prefix.l:raw.l:spc
+    return g:airline_left_alt_sep.l:spc.'srb:'.l:spc.l:raw.l:spc
   endif
+endfunction
+
+function! airline#extensions#sorbet#errors()
+  let l:diagnostics_dict = LanguageClient#statusLineDiagnosticsCounts()
+  let l:spc = g:airline_symbols.space
+  if !has_key(l:diagnostics_dict, 'E')
+    return ''
+  endif
+
+  if l:diagnostics_dict.E == 0
+    return ''
+  endif
+
+  return 'srb:'.l:spc.l:diagnostics_dict.E
 endfunction

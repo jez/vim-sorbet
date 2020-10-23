@@ -13,25 +13,9 @@ You can see the notifications in the demo above.
 - LanguageClient-neovim
 - vim-airline
 
+TODO(jez) document how to set up
+
 ## Usage
-
-I assume you know how to configure LanguageClient-neovim to work with Sorbet.
-
-You will need to have a `.vim/settings.json` file in each project you want to
-use with Sorbet:
-
-```json
-{
-  "initializationOptions": {
-    "supportsOperationNotifications": true
-  }
-}
-```
-
-You can chime in on [this feature request] against LanguageClient-neovim to
-request a way to configure this globally.
-
-[this feature request]: https://github.com/autozimu/LanguageClient-neovim/issues/1107
 
 If you want to customize where the section goes:
 
@@ -50,10 +34,8 @@ au User AirlineAfterInit ++once call MyCustomAirlineInit()
   - Read this commit more closely (c75636525bf2cedee9f30e3eee5c3fef5d56d6b2)
 - Surface error message better to user
   - Especially watchman error, `--dir` error, file not found error, etc.
-- Auto-configure serverCommands
 - Vim doc/ pages
-- status line diagnostic counts (ea92efe)
-- prefered markup kind (26d77fa)
+- look at how `jdt://` is implemented, try to implement `sorbet://`
 
 Read changelog
 
