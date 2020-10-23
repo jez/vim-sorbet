@@ -36,9 +36,3 @@ au User AirlineAfterInit ++once call MyCustomAirlineInit()
   - Especially watchman error, `--dir` error, file not found error, etc.
 - Vim doc/ pages
 - look at how `jdt://` is implemented, try to implement `sorbet://`
-
-Read changelog
-
-```
-gla 055744014991647e03c92d537e9c2fd49f7d5d85..HEAD
-```
