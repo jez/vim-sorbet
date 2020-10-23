@@ -60,6 +60,8 @@ function! s:get_server_args() abort
   " TODO(jez) --debug-log-file ?
 
   let l:sorbet_lsp_args += g:sorbet_lsp_extra_args
+
+  return l:sorbet_lsp_args
 endfunction
 
 if !has_key(g:LanguageClient_serverCommands, 'ruby')
