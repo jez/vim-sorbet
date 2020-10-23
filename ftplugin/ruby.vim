@@ -14,6 +14,8 @@ if !exists('g:LanguageClient_settingsPath')
   " Later items in the list take precedence.
   " Put our settings.json first so they act as defaults
   let g:LanguageClient_settingsPath = [s:script_dir.'/settings.json', '.vim/settings.json']
+else
+  let g:LanguageClient_settingsPath = insert(g:LanguageClient_settingsPath, s:script_dir.'/settings.json', 0)
 endif
 
 " TODO(jez) Might be able to set LangageClient_rootMarkers
