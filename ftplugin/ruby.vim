@@ -76,3 +76,17 @@ if !has_key(g:LanguageClient_serverCommands, 'ruby')
 endif
 
 let g:LanguageClient_preferredMarkupKind = ['markdown', 'plaintext']
+
+function! s:language_client_pandoc_markdown()
+  if bufname('%') ==# '__LanguageClient__'
+    setlocal filetype=pandoc
+  endif
+endfunction
+
+if exists('g:vim_pandoc_syntax_exists')
+  let g:LanguageClient_hoverMarginSize = 0
+  augroup vimSorbetPandocMarkdown
+    au!
+    au FileType markdown call s:language_client_pandoc_markdown()
+  augroup END
+endif
