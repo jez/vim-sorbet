@@ -1,5 +1,6 @@
 {
   "initializationOptions": {
-    "supportsOperationNotifications": true
+    "supportsOperationNotifications": true,
+    "supportsSorbetURIs": true
   }
 }
