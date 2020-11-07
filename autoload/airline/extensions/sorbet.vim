@@ -22,6 +22,8 @@ endif
 
 let s:default_short_descriptions = {
       \ 'Idle': '✔',
+      \ 'ServerNotRunning': '✘',
+      \ 'UnknownStatus': '?',
       \ 'Indexing': '⏳',
       \ 'SlowPathBlocking': '⌛️',
       \ 'SlowPathNonBlocking': '…',
@@ -57,26 +59,46 @@ function! airline#extensions#sorbet#apply(...)
 endfunction
 
 function! airline#extensions#sorbet#status_bare()
-  if exists('g:sorbet_showOperation_status')
-    if empty(g:sorbet_showOperation_status)
-      if g:airline#extensions#sorbet#use_short_descriptions
-        return g:airline#extensions#sorbet#short_descriptions.Idle
-      else
-        let l:long_descs = g:airline#extensions#sorbet#long_descriptions
-        return get(l:long_descs, 'Idle', 'Idle')
-      end
+  if !exists('b:LanguageClient_isServerRunning')
+    " If you can get this to show up, you've found a bug. Please tell me.
+    " I think that b:LanguageClient_isServerRunning should always be set.
+    return '🐞'
+  endif
+
+  if !b:LanguageClient_isServerRunning
+    if g:airline#extensions#sorbet#use_short_descriptions
+      return g:airline#extensions#sorbet#short_descriptions.ServerNotRunning
     else
-      let l:status = g:sorbet_showOperation_status[-1]
-      if g:airline#extensions#sorbet#use_short_descriptions
-        let l:short_descs = g:airline#extensions#sorbet#short_descriptions
-        return get(l:short_descs, l:status.operationName, '?')
-      else
-        let l:long_descs = g:airline#extensions#sorbet#long_descriptions
-        return get(l:long_descs, l:status.operationName, l:status.description)
-      end
-    endif
+      let l:long_descs = g:airline#extensions#sorbet#long_descriptions
+      return get(l:long_descs, 'ServerNotRunning', 'Server not running')
+    end
+  endif
+
+  if !exists('g:sorbet_showOperation_status')
+    if g:airline#extensions#sorbet#use_short_descriptions
+      return g:airline#extensions#sorbet#short_descriptions.UnknownStatus
+    else
+      let l:long_descs = g:airline#extensions#sorbet#long_descriptions
+      return get(l:long_descs, 'UnknownStatus', 'Server status unknown')
+    end
+  endif
+
+  if empty(g:sorbet_showOperation_status)
+    if g:airline#extensions#sorbet#use_short_descriptions
+      return g:airline#extensions#sorbet#short_descriptions.Idle
+    else
+      let l:long_descs = g:airline#extensions#sorbet#long_descriptions
+      return get(l:long_descs, 'Idle', 'Idle')
+    end
   else
-    return ''
+    let l:status = g:sorbet_showOperation_status[-1]
+    if g:airline#extensions#sorbet#use_short_descriptions
+      let l:short_descs = g:airline#extensions#sorbet#short_descriptions
+      return get(l:short_descs, l:status.operationName, '?')
+    else
+      let l:long_descs = g:airline#extensions#sorbet#long_descriptions
+      return get(l:long_descs, l:status.operationName, l:status.description)
+    end
   endif
 endfunction
 
