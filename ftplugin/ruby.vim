@@ -33,6 +33,12 @@ function! s:get_server_command() abort
     return ['pay', 'exec', 'scripts/bin/typecheck']
   endif
 
+  if fnamemodify(getcwd(), ':p') =~# $HOME.'/stripe-b/pay-server'
+    return ['pay', 'exec', 'scripts/bin/typecheck']
+  endif
+
+  return ['sorbet']
+
   if filereadable('Gemfile') && executable('bundle')
     call system('bundle exec srb tc --version < /dev/null > /dev/null 2> /dev/null')
     if !v:shell_error
@@ -68,7 +74,7 @@ if !has_key(g:LanguageClient_serverCommands, 'ruby')
   let s:sorbet_lsp_args = s:get_server_args()
 
   let s:sorbet_cmd = s:get_server_command()
-  if type(s:sorbet_cmd) == v:t_list
+  if type(s:sorbet_cmd) == v:t_list && s:sorbet_cmd == ['sorbet']
     let g:LanguageClient_serverCommands.ruby = s:sorbet_cmd + s:sorbet_lsp_args
   endif
 
